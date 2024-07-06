@@ -4,11 +4,12 @@ import { register } from './buttonAction/register';
 import { setup } from './commands/setup';
 import { Commands } from './enum/commands';
 import { CustomId } from './enum/customId';
+import { setInitialRole } from './roleEdit/setInitialRole';
 
 dotenv.config();
 
 const customConsole = {
-    timestamp: function(): String {
+    timestamp: function(): string {
         return (new Date)
             .toLocaleString(
                 "ja-JP",
@@ -22,7 +23,7 @@ const customConsole = {
                 }
             );
     },
-    log: function(log: String) {
+    log: function(log: string) {
         console.log(this.timestamp(), log);
     },
     error: function(error: any) {
@@ -63,6 +64,18 @@ client.on(Events.InteractionCreate, async interaction => {
             try {
                 await register(interaction);
                 customConsole.log(`ボタン"${interaction.customId}"の処理が完了しました`);
+            } catch (error: any) {
+                customConsole.error(error);
+            }
+        }
+    }
+
+    if (interaction.isModalSubmit()) {
+        if (interaction.customId === CustomId.RegisterModal) {
+            customConsole.log(`モーダル"${interaction.customId}"が送信されました`);
+            try {
+                await setInitialRole(interaction);
+                customConsole.log(`モーダル"${interaction.customId}"の処理が完了しました`);
             } catch (error: any) {
                 customConsole.error(error);
             }

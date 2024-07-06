@@ -12,21 +12,21 @@ export const register = async (interaction: ButtonInteraction): Promise<void> =>
 
     const familyNameInput = new TextInputBuilder()
         .setCustomId(CustomId.FamilyNameInput)
-        .setLabel("名字ローマ字　(※全て小文字で入力してください)")
+        .setLabel("名字ローマ字　(※全て半角小文字で入力してください)")
         .setRequired(true)
         .setStyle(TextInputStyle.Short)
         .setPlaceholder("yokohama");
 
     const givenNameInput = new TextInputBuilder()
         .setCustomId(CustomId.GivenNameInput)
-        .setLabel("名前ローマ字　(※全て小文字で入力してください)")
+        .setLabel("名前ローマ字　(※全て半角小文字で入力してください)")
         .setRequired(true)
         .setStyle(TextInputStyle.Short)
         .setPlaceholder("taro");
 
     const graduatesInput = new TextInputBuilder()
         .setCustomId(CustomId.GraduatesInput)
-        .setLabel("卒業期　(※数字のみ入力してください)")
+        .setLabel("卒業期　(※半角数字のみ入力してください)")
         .setRequired(true)
         .setStyle(TextInputStyle.Short)
         .setMaxLength(3) // とりあえず3桁までにしておく
