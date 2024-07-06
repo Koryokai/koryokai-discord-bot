@@ -1,13 +1,14 @@
 // コマンド登録時のみ使用
 import { REST, Routes } from "discord.js";
 import dotenv from "dotenv";
+import { Commands } from "../enum/commands";
 
 (async() => {
     dotenv.config();
 
     const commands = [
         {
-            name: "setup",
+            name: Commands.SetUp,
             description: "このチャンネルに初期設定メッセージを送信します"
         },
     ];
