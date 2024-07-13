@@ -54,7 +54,7 @@ export const register = async (interaction: ButtonInteraction): Promise<void> =>
     try {
         await interaction.awaitModalSubmit({ filter: i => i.customId === CustomId.RegisterModal+interaction.id, time: 180_000 })
             .then(async i => {
-                await setInitialRole(i);
+                await setInitialRole(i).catch(e => customConsole.error(e));
             });
     } catch (e) {
         customConsole.error(e);
