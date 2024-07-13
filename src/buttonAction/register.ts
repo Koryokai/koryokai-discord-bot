@@ -52,7 +52,7 @@ export const register = async (interaction: ButtonInteraction): Promise<void> =>
     await interaction.showModal(modal);
 
     try {
-        await interaction.awaitModalSubmit({ filter: i => i.customId === CustomId.RegisterModal+interaction.id, time: 10_000 })
+        await interaction.awaitModalSubmit({ filter: i => i.customId === CustomId.RegisterModal+interaction.id, time: 180_000 })
             .then(async i => {
                 await setInitialRole(i);
             });
