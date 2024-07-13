@@ -1,5 +1,6 @@
 import { ActionRowBuilder, ButtonInteraction, ModalActionRowComponentBuilder, ModalBuilder, TextInputBuilder, TextInputStyle } from "discord.js";
 import { CustomId } from "../enum/customId";
+import { setInitialRole } from "../roleEdit/setInitialRole";
 
 export const register = async (interaction: ButtonInteraction): Promise<void> => {
 
@@ -38,7 +39,7 @@ export const register = async (interaction: ButtonInteraction): Promise<void> =>
     const fourthActionRow = new ActionRowBuilder<ModalActionRowComponentBuilder>().addComponents(graduatesInput);
 
     const modal = new ModalBuilder()
-        .setCustomId(CustomId.RegisterModal)
+        .setCustomId(CustomId.RegisterModal+interaction.id)
         .setTitle("お名前 初期設定")
         .addComponents(
             firstActionRow,
@@ -48,4 +49,13 @@ export const register = async (interaction: ButtonInteraction): Promise<void> =>
         );
     
     await interaction.showModal(modal);
+
+    try {
+        await interaction.awaitModalSubmit({ filter: i => i.customId === CustomId.RegisterModal+interaction.id, time: 10_000 })
+            .then(async i => {
+                await setInitialRole(i);
+            });
+    } catch (e) {
+        console.error(e);
+    }
 };
