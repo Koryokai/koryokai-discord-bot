@@ -1,4 +1,5 @@
 import { Colors, EmbedBuilder, GuildMember, ModalSubmitInteraction, Role } from "discord.js";
+import { customConsole } from "../common/customConsole";
 import { CustomId } from "../enum/customId";
 
 export const setInitialRole = async (interaction: ModalSubmitInteraction): Promise<void> => {
@@ -29,7 +30,7 @@ export const setInitialRole = async (interaction: ModalSubmitInteraction): Promi
 
     const guild = interaction.guild;
     const member = interaction.member as GuildMember;
-    member.setNickname(fullName).catch(console.error);
+    member.setNickname(fullName).catch(e => customConsole.error(e));
 
     const nameRole = guild?.roles.cache.find(role => role.name === `${familyName.toLowerCase()}.${givenName.toLowerCase()}.${graduates}`);
     if (!nameRole) {

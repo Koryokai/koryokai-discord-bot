@@ -2,33 +2,11 @@ import { Client, Events, GatewayIntentBits } from 'discord.js';
 import dotenv from 'dotenv';
 import { register } from './buttonAction/register';
 import { setup } from './commands/setup';
+import { customConsole } from './common/customConsole';
 import { Commands } from './enum/commands';
 import { CustomId } from './enum/customId';
 
 dotenv.config();
-
-const customConsole = {
-    timestamp: function(): string {
-        return (new Date)
-            .toLocaleString(
-                "ja-JP",
-                { 
-                    year: 'numeric',
-                    month: '2-digit',
-                    day: '2-digit',
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    second: '2-digit'
-                }
-            );
-    },
-    log: function(log: string) {
-        console.log(this.timestamp(), log);
-    },
-    error: function(error: any) {
-        console.error(this.timestamp, error);
-    }
-};
 
 const client = new Client({
     intents: [

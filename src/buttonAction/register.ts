@@ -1,4 +1,5 @@
 import { ActionRowBuilder, ButtonInteraction, ModalActionRowComponentBuilder, ModalBuilder, TextInputBuilder, TextInputStyle } from "discord.js";
+import { customConsole } from "../common/customConsole";
 import { CustomId } from "../enum/customId";
 import { setInitialRole } from "../roleEdit/setInitialRole";
 
@@ -56,6 +57,6 @@ export const register = async (interaction: ButtonInteraction): Promise<void> =>
                 await setInitialRole(i);
             });
     } catch (e) {
-        console.error(e);
+        customConsole.error(e);
     }
 };
