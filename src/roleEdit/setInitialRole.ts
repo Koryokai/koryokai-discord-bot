@@ -12,8 +12,8 @@ export const setInitialRole = async (interaction: ModalSubmitInteraction): Promi
     if (!isValid(fullName, familyName, givenName, graduates)) {
         const fields = new Array<{ name: string, value: string }>();
         if (!/^\S+$/.test(fullName)) fields.push({ name: "漢字フルネームに間違いがあります", value: "スペースを入れずに入力してください\nㅤ" });
-        if (!/^[A-Za-z]+$/.test(familyName)) fields.push({ name: "名字ローマ字に間違いがあります", value: "半角アルファベットで入力してください\nㅤ" });
-        if (!/^[A-Za-z]+$/.test(givenName)) fields.push({ name: "名前ローマ字に間違いがあります", value: "半角アルファベットで入力してください\nㅤ" });
+        if (!/^[A-Za-z-]+$/.test(familyName)) fields.push({ name: "名字ローマ字に間違いがあります", value: "半角アルファベットで入力してください\nㅤ" });
+        if (!/^[A-Za-z-]+$/.test(givenName)) fields.push({ name: "名前ローマ字に間違いがあります", value: "半角アルファベットで入力してください\nㅤ" });
         if (!/^\d+$/.test(graduates)) fields.push({ name: "卒業期に間違いがあります", value: "半角数字のみ入力してください" });
 
         await interaction.reply({
@@ -30,19 +30,21 @@ export const setInitialRole = async (interaction: ModalSubmitInteraction): Promi
 
     const guild = interaction.guild;
     const member = interaction.member as GuildMember;
-    member.setNickname(fullName).catch(e => customConsole.error(e));
+    const settingName = `${fullName}(${familyName.toLowerCase()}.${givenName.toLowerCase()}.${graduates})`;
+    member.setNickname(settingName).catch(e => customConsole.error(e));
 
-    const nameRole = guild?.roles.cache.find(role => role.name === `${familyName.toLowerCase()}.${givenName.toLowerCase()}.${graduates}`);
-    if (!nameRole) {
-        const newNameRole = await guild?.roles.create({
-            name: `${familyName.toLowerCase()}.${givenName.toLowerCase()}.${graduates}`,
-            mentionable: true,
-        }) as Role;
-        member.roles.add(newNameRole);
-    }
-    else {
-        member.roles.add(nameRole);
-    }
+    // ローマ字氏名のロールを設定すると増えすぎるため廃止
+    // const nameRole = guild?.roles.cache.find(role => role.name === `${familyName.toLowerCase()}.${givenName.toLowerCase()}.${graduates}`);
+    // if (!nameRole) {
+    //     const newNameRole = await guild?.roles.create({
+    //         name: `${familyName.toLowerCase()}.${givenName.toLowerCase()}.${graduates}`,
+    //         mentionable: true,
+    //     }) as Role;
+    //     member.roles.add(newNameRole);
+    // }
+    // else {
+    //     member.roles.add(nameRole);
+    // }
 
     const graduatesRole = guild?.roles.cache.find(role => role.name === `${graduates}期`)
     if (!graduatesRole) {
@@ -64,8 +66,8 @@ export const setInitialRole = async (interaction: ModalSubmitInteraction): Promi
 
 const isValid = (fullName: string, familyName: string, givenName: string, graduates: string): boolean => {
     if (!/^\S+$/.test(fullName)) return false;
-    if (!/^[A-Za-z]+$/.test(familyName)) return false;
-    if (!/^[A-Za-z]+$/.test(givenName)) return false;
+    if (!/^[A-Za-z-]+$/.test(familyName)) return false;
+    if (!/^[A-Za-z-]+$/.test(givenName)) return false;
     if (!/^\d+$/.test(graduates)) return false;
 
     return true;
